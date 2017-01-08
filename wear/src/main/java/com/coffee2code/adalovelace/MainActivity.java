@@ -1,12 +1,18 @@
 package com.coffee2code.adalovelace;
 
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.BoxInsetLayout;
+import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -15,28 +21,31 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends WearableActivity implements SensorEventListener {
+public class MainActivity extends WearableActivity implements HeartBeatService.OnChangeListener {
 
     private static final String TAG = "MainActivity";
-    private BoxInsetLayout mContainerView;
     private TextView mTextView;
-    private TextView mClockView;
-    private SensorManager mSensorManager;
-    private Sensor mHeartSensor;
-    private Sensor mHeartRateSensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // setAmbientEnabled();
+        mTextView = (TextView) findViewById(R.id.heartbeatText);
+        bindService(new Intent(MainActivity.this, HeartBeatService.class), new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                Log.d(TAG, "connected to service.");
 
-        mSensorManager = ((SensorManager) getSystemService(SENSOR_SERVICE));
-        mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+                ((HeartBeatService.HeartBeatServiceBinder)iBinder).setChangeListener(MainActivity.this);
 
-        mContainerView = (BoxInsetLayout) findViewById(R.id.container);
-        mTextView = (TextView) findViewById(R.id.text);
-        mClockView = (TextView) findViewById(R.id.clock);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+
+            }
+        }, Service.BIND_AUTO_CREATE);
+
 
         
     }
@@ -44,41 +53,14 @@ public class MainActivity extends WearableActivity implements SensorEventListene
     @Override
     protected void onResume() {
         super.onResume();
-        mSensorManager.registerListener(this, mHeartRateSensor, SensorManager.SENSOR_DELAY_FASTEST);
+
     }
+
+
+
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mSensorManager.unregisterListener(this, mHeartRateSensor);
-    }
-
-    private void updateDisplay() {
-        if (isAmbient()) {
-            mContainerView.setBackgroundColor(getResources().getColor(android.R.color.black));
-            mTextView.setTextColor(getResources().getColor(android.R.color.white));
-            mClockView.setVisibility(View.VISIBLE);
-
-        } else {
-            mContainerView.setBackground(null);
-            mTextView.setTextColor(getResources().getColor(android.R.color.black));
-            mClockView.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
-            String msg = "" + (int) event.values[0];
-            mClockView.setText(msg);
-            Log.d(TAG, msg);
-        }
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        Log.d(TAG, "onAccuracyChanged - accuracy: " + accuracy);
-
+    public void onValueChanged(int newValue) {
+        mTextView.setText(String.valueOf(newValue));
     }
 }
