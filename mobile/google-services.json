@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1008432744082",
+    "firebase_url": "https://adalovelace-1979c.firebaseio.com",
+    "project_id": "adalovelace-1979c",
+    "storage_bucket": "adalovelace-1979c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008432744082:android:2ec05af4b0ef06e9",
+        "android_client_info": {
+          "package_name": "com.coffee2code.adalovelace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008432744082-jim68nvnidgl470cmtjccquksb7vi2kn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coffee2code.adalovelace",
+            "certificate_hash": "ACC20AFEF6DFEB0083E18E3FE3EC14D3A43FF8A2"
+          }
+        },
+        {
+          "client_id": "1008432744082-g6h8bo04v8iu9nda5q8t4pf0t7g2i255.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1alchO_Lj4ibxrtNWCzZmCAReOus5_qs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008432744082-g6h8bo04v8iu9nda5q8t4pf0t7g2i255.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
