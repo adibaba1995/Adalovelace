@@ -52,7 +52,7 @@ public class SplashScreen extends AppCompatActivity {
                 if (auth.getCurrentUser() != null) {
 
 // already signed in
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), Ambulance.class);
                     startActivity(intent);
                     finish();
 
